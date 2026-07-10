@@ -33,6 +33,7 @@ def studentDetailsView(request, pk):
         student = Student.objects.get(pk=pk)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
     # this is for geting sigle data
     if request.method== 'GET':
         serializer = studentSerializer(student)
@@ -97,8 +98,8 @@ class EmployeesDetails(APIView):
     
 """
 
+"""
 # mixins start here
-
 class Employees(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView): 
     queryset = Employee.objects.all()
     serializer_class = employeeSerializer
@@ -124,3 +125,16 @@ class EmployeesDetails(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.
     def delete(self, request,pk):
         return self.destroy(request,pk)
     
+"""
+
+# Generics start for here
+
+class Employees(generics.ListCreateAPIView ):     # in this they do both listing and creating api view 
+    queryset = Employee.objects.all()
+    serializer_class = employeeSerializer
+
+
+class EmployeesDetails(generics.RetrieveUpdateDestroyAPIView):    # this thye do three work retriving sigle , updating and destroy
+    queryset = Employee.objects.all()
+    serializer_class = employeeSerializer
+    lookup_field = 'pk'
