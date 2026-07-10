@@ -7,7 +7,7 @@ from api.serializers import studentSerializer
 from employee.models import Employee
 from .serializers import employeeSerializer
 from django.http import Http404
-from rest_framework import mixins,generics
+from rest_framework import mixins,generics, viewsets
 
 
 """
@@ -157,7 +157,7 @@ class EmployeesDetails(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.
 """
 
 # Generics start for here
-
+"""
 class Employees(generics.ListCreateAPIView ):     # in this they do both listing and creating api view 
     queryset = Employee.objects.all()
     serializer_class = employeeSerializer
@@ -168,3 +168,12 @@ class EmployeesDetails(generics.RetrieveUpdateDestroyAPIView):    # this thye do
     serializer_class = employeeSerializer
     lookup_field = 'pk'
 
+    
+"""
+
+
+#Viewsets
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = employeeSerializer
