@@ -10,6 +10,7 @@ from django.http import Http404
 from rest_framework import mixins,generics
 
 
+"""
 # Create your views here.
 @api_view(['GET','POST'])
 def studentView(request):
@@ -51,7 +52,35 @@ def studentDetailsView(request, pk):
         #this is for deleting one data
     elif request.method== 'DELETE':
         student.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)  
+        return Response(status=status.HTTP_204_NO_CONTENT) 
+
+"""
+
+# this is for students mixins used in classbased view
+class studentView(mixins.ListModelMixin,mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Student.objects.all()
+    serializer_class = studentSerializer
+
+    def get(self, request):
+        return self.list(request)
+    
+    def post(self, request):
+        return self.create(request)
+    
+class studentDetailsView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin,generics.GenericAPIView):
+    queryset = Student.objects.all()
+    serializer_class = studentSerializer
+
+    def get(self, request,pk):
+        return self.retrieve(request,pk)
+
+    def put(self, request,pk):
+        return self.update(request,pk)
+    
+    def delete(self, request, pk):
+        return self.delete(request,pk)
+            
+
 
 
 """
@@ -138,3 +167,4 @@ class EmployeesDetails(generics.RetrieveUpdateDestroyAPIView):    # this thye do
     queryset = Employee.objects.all()
     serializer_class = employeeSerializer
     lookup_field = 'pk'
+
